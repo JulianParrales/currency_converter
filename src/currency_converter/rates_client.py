@@ -41,11 +41,16 @@ class RatesSnapshot:
     next_update_unix: int
 
 
+def normalize_code(code: str) -> str:
+    """Return an upper-case 3-letter currency code or raise InvalidCurrencyError."""
+    code = code.strip().upper()
+    if not (len(code) == 3 and code.isascii() and code.isalpha()):
+        raise InvalidCurrencyError(f"{code!r} is not a valid 3-letter currency code.")
+    return code
+
 def fetch_rates(base: str, timeout: float = DEFAULT_TIMEOUT) -> RatesSnapshot:
     """Fetch all exchange rates for one base currency."""
-    base = base.strip().upper()
-    if not (len(base) == 3) and base.isalpha():
-        raise InvalidCurrencyError(f"{base!r} is not a valid 3-letter currency code.")
+    base = normalize_code(base)
 
     try:
         response = requests.get(f"{BASE_URL}/{base}", timeout=timeout)

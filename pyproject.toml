@@ -9,6 +9,9 @@ description = "Convert between currencies using live exchange rates."
 requires-python = ">=3.10"
 dependencies = ["requests>=2.31"]
 
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
 [project.scripts]
 convert = "currency_converter.cli:main"
 
